@@ -2,6 +2,11 @@ import flatpickr from "flatpickr";
 // Додатковий імпорт стилів
 import "flatpickr/dist/flatpickr.min.css";
 
+// Описаний у документації
+import iziToast from "izitoast";
+// Додатковий імпорт стилів
+import "izitoast/dist/css/iziToast.min.css";
+
 const elements = {
     dataTimePicker: document.querySelector("#datatime-picker"),
     btn: document.querySelector("[data-start]"),
@@ -20,7 +25,6 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    // console.log(selectedDates[0]);
     if (selectedDates[0] - options.defaultDate > 0) {
         elements.btn.disabled = false;
     }
@@ -32,88 +36,34 @@ const fp = flatpickr("#datatime-picker", options);
 elements.btn.addEventListener("click", startTimer);
 
 function startTimer() {
-  let counter = 0;
-  counter = Date.parse(fp.selectedDates[0]) - new Date();
-  console.log("fp", fp.selectedDates[0]);
-  console.log("counter", counter);
+  // console.log("selectedDates[0]", (fp.selectedDates[0]).getTime());  //  перевірка отримання обраної дати
+  // console.log("options.defaultDate", Date.parse(options.defaultDate));  //  перевірка поточної дати дати
+  let counter = (fp.selectedDates[0]).getTime() - Date.parse(options.defaultDate);
+  // console.log("counter", counter);  //  перевірка різниці часу
   elements.btn.disabled = true;
+  elements.dataTimePicker.disabled = true;
+  counter = counter / 1000; // перетворення в секунди
 
-  setInterval(() => {
-  
-const day = counter / 60 / 60 / 24 / 365;
-// const hour = currentTime.getHours();
-// const minute = currentTime.getMinutes();
-// const second = currentTime.getSeconds();
+  const setIntervalUser = setInterval(() => {
+    const day = Math.floor(counter / 60 / 60 / 24);
+    const hour = Math.floor((counter / 60 / 60)%24);
+    const minutes = Math.floor((counter / 60)%60);
+    const seconds = Math.floor(counter%60);
 
-elements.days.textContent = day.toFixed(0);
-// elements.hours.textContent = hour;
-// elements.minutes.textContent = minute;
-// elements.seconds.textContent = second;
-}, 1000)
+    if (0 < counter) {
+      counter -= 1;
+    } else if (counter === 0) {
+      clearInterval(setIntervalUser);
+      iziToast.show({
+        message: 'Відлік часу закінчено'
+      
+});
+  }  
 
+    elements.days.textContent = `${String((day.toFixed())).padStart(2, 0)}`;
+    elements.hours.textContent = `${String((hour.toFixed())).padStart(2, 0)}`;
+    elements.minutes.textContent = `${String((minutes.toFixed())).padStart(2, 0)}`;
+    elements.seconds.textContent = `${String((seconds.toFixed())).padStart(2, 0)}`;
+  }, 1000)
 }
-
-
-
-
-
-
-// elements.dataTimePicker.addEventListener("input", fp);
-// function fp(event) {
-//   elements.btn.addEventListener("click", fp1);
-//   console.log("event", event)
-// if (flp) {
-//   console.log(flp.currentMonth)
-//   // elements.btn.disabled = false;
-// }
-// }
-  
-// function fp1() {
-//   elements.btn.disabled = false;
-// }
-
-    //   dataTimePicker.addEventListener("click", fp);
-    // function fp(event) {
-    //   console.log("event", event)
-    // }
-
-
-// const fp = flatpickr("#datatime-picker", options);  //  обраний час
-
-
-
-// console.log("fp", fp.value)
-
-
-
-
-// console.log("counter", counter)
-
-// setInterval(() => {
-  
-// const day = currentTime.getDate();
-// const hour = currentTime.getHours();
-// const minute = currentTime.getMinutes();
-// const second = currentTime.getSeconds();
-
-// elements.days.textContent = day;
-// elements.hours.textContent = hour;
-// elements.minutes.textContent = minute;
-// elements.seconds.textContent = second;
-// }, 1000)
-
-
-
-// console.log("counter", counter)
-
-// const id = setInterval(() => {
-//     counter -= 1;
-//     if (0 < counter) {
-//         console.log("counter", counter);
-//     } else if (counter === 0) {
-//         console.log(`counter ${counter} - STOP`);
-//     }
-// }, 1000)
-
-
 
