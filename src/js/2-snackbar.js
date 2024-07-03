@@ -12,6 +12,7 @@ function delayUser(event) {
     event.preventDefault();
     const form = event.target;
     const delay = form.elements.delay.value;
+    // console.log("delay", delay)
     const stateUserInput = form.elements.state.value;
     // console.log("stateUserInput", stateUserInput); 
    
@@ -37,8 +38,8 @@ function delayUser(event) {
     });
     
     promise
-        .then(resv => resv)
-        .catch(rej => rej)
+        .then(delay => delay)
+        .catch(delay => delay)
 }
 
 
