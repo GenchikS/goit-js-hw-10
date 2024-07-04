@@ -3,7 +3,7 @@ import iziToast from "izitoast";
 // Додатковий імпорт стилів
 import "izitoast/dist/css/iziToast.min.css";
 
-const formSubmit = document.querySelector(".form")
+const formSubmit = document.querySelector(".form");
 
 
 formSubmit.addEventListener("submit", delayUser);
@@ -17,29 +17,30 @@ function delayUser(event) {
     // console.log("stateUserInput", stateUserInput); 
    
     const promise = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (stateUserInput === `fulfilled`) {
-                resolve(
-                    iziToast.success({
-                    title: `OK`,
-                    message: `Fulfilled promise in ${delay}` ,
-                })
-                );
-            } else if (stateUserInput === `rejected`) {
-                reject(
-                    iziToast.warning({
-                    title: 'Warning',
-                    message: ` Rejected promise in ${delay}`,
-                })
-                );
-            };
-        }, delay);
+        if (stateUserInput === `fulfilled`) {
+            resolve(delay);
+        } else {
+            reject(delay)
+        }
         form.reset();
     });
     
     promise
-        .then(delay => delay)
-        .catch(delay => delay)
+        .then(delay => setTimeout(() => {
+            iziToast.success({
+                        title: `OK`,
+                        message: `Fulfilled promise in ${delay}`,
+                    })
+        }, delay))
+        .catch(delay => setTimeout(() => {
+            iziToast.warning({
+                        title: 'Warning',
+                        message: ` Rejected promise in ${delay}`,
+                    })
+        }, delay))
+    
+// console.log(promise);  //  перевірка промісу
 }
+
 
 
