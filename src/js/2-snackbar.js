@@ -18,26 +18,26 @@ function delayUser(event) {
    
     const promise = new Promise((resolve, reject) => {
         if (stateUserInput === `fulfilled`) {
-            resolve(delay);
+            resolve(delay);  //  аргумент який передається в then(res)
         } else {
-            reject(delay)
+            reject(delay)  //  аргумент який передається в then(rej)
         }
         form.reset();
     });
     
     promise
-        .then(delay => setTimeout(() => {
+        .then(res => setTimeout(() => {
             iziToast.success({
                         title: `OK`,
                         message: `Fulfilled promise in ${delay}`,
                     })
-        }, delay))
-        .catch(delay => setTimeout(() => {
+        }, res))
+        .catch(rej => setTimeout(() => {
             iziToast.warning({
                         title: 'Warning',
                         message: ` Rejected promise in ${delay}`,
                     })
-        }, delay))
+        }, rej))
     
 // console.log(promise);  //  перевірка промісу
 }
