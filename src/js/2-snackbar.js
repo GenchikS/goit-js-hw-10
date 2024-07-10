@@ -29,13 +29,13 @@ function delayUser(event) {
         .then(res => setTimeout(() => {
             iziToast.success({
                         title: `OK`,
-                        message: `Fulfilled promise in ${delay}`,
+                        message: `Fulfilled promise in ${res}`,
                     })
         }, res))
         .catch(rej => setTimeout(() => {
             iziToast.warning({
                         title: 'Warning',
-                        message: ` Rejected promise in ${delay}`,
+                        message: ` Rejected promise in ${rej}`,
                     })
         }, rej))
     
